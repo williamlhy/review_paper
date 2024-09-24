@@ -702,32 +702,58 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     ;
 
-    const container = document.getElementById('question-container');
-    let currentNode = "0";  // Starting point
-
+    let currentNode = "0"; // Start node
     function displayQuestion(node) {
-        const entry = data[node];
-        const div = document.createElement('div');
-        div.classList.add('question-box');
+        const questionContainer = document.getElementById('questionContainer');
 
-        if (entry.question) {
-            div.innerHTML = `<p>${entry.question}</p>
-                <button onclick="answerQuestion('${node}', 'yes')">Yes</button>
-                <button onclick="answerQuestion('${node}', 'no')">No</button>`;
-        } else if (entry.answer) {
-            div.innerHTML = `<p class="answer">${entry.answer}</p>`;
+        if (data[node] && data[node].question) {
+            // Create a div for each question and its options
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+
+            const questionText = document.createElement('p');
+            questionText.innerText = data[node].question;
+            questionDiv.appendChild(questionText);
+
+            // Create Yes button
+            const yesButton = document.createElement('button');
+            yesButton.innerText = 'Yes';
+            yesButton.onclick = function () {
+                currentNode = data[node].yes;
+                displayQuestion(currentNode);
+            };
+            questionDiv.appendChild(yesButton);
+
+            // Create No button
+            const noButton = document.createElement('button');
+            noButton.innerText = 'No';
+            noButton.onclick = function () {
+                currentNode = data[node].no;
+                displayQuestion(currentNode);
+            };
+            questionDiv.appendChild(noButton);
+
+            // Append the question block to the container
+            questionContainer.appendChild(questionDiv);
+
+        } else if (data[node] && data[node].answer) {
+            // Create a div for the final answer
+            const answerDiv = document.createElement('div');
+            answerDiv.classList.add('answer');
+
+            const answerText = document.createElement('p');
+            answerText.innerHTML = data[node].answer;  // Allow HTML content for the link
+            answerDiv.appendChild(answerText);
+
+            // Append the answer to the container
+            questionContainer.appendChild(answerDiv);
+        } else {
+            const fallback = document.createElement('p');
+            fallback.innerText = "No more questions or answers.";
+            questionContainer.appendChild(fallback);
         }
-
-        container.appendChild(div);
     }
 
-    function answerQuestion(currentNode, answer) {
-        const nextNode = data[currentNode][answer];
-        if (nextNode) {
-            displayQuestion(nextNode);
-        }
-    }
-
-    // Display the first question
+    // Start the first question
     displayQuestion(currentNode);
 });
