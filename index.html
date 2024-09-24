@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Questionnaire</title>
+    <title>Question Flow</title>
+    <style>
+        .question-box {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .button-group {
+            margin-top: 10px;
+        }
+        .answer {
+            font-weight: bold;
+        }
+        .back-button {
+            margin-top: 5px;
+            background-color: lightgray;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div id="questionBox"></div>
+    <div id="question-container"></div>
 
     <script src="script.js"></script>
 </body>
