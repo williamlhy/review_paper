@@ -702,54 +702,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     ;
 
-    const history = [];
+    const container = document.getElementById('question-container');
     let currentNode = "0";  // Starting point
 
-    const container = document.getElementById('question-container');
-
     function displayQuestion(node) {
-        currentNode = node;
         const entry = data[node];
         const div = document.createElement('div');
         div.classList.add('question-box');
 
         if (entry.question) {
             div.innerHTML = `<p>${entry.question}</p>
-                <div class="button-group">
-                    <button onclick="answerQuestion('yes')">Yes</button>
-                    <button onclick="answerQuestion('no')">No</button>
-                </div>`;
+                <button onclick="answerQuestion('${node}', 'yes')">Yes</button>
+                <button onclick="answerQuestion('${node}', 'no')">No</button>`;
         } else if (entry.answer) {
             div.innerHTML = `<p class="answer">${entry.answer}</p>`;
-        }
-
-        // Add the back button to go to the previous question
-        if (history.length > 0) {
-            const backButton = document.createElement('button');
-            backButton.classList.add('back-button');
-            backButton.textContent = 'Back';
-            backButton.onclick = goBack;
-            div.appendChild(backButton);
         }
 
         container.appendChild(div);
     }
 
-    function answerQuestion(answer) {
-        history.push(currentNode);  // Save the current node in history
-
+    function answerQuestion(currentNode, answer) {
         const nextNode = data[currentNode][answer];
         if (nextNode) {
             displayQuestion(nextNode);
-        }
-    }
-
-    function goBack() {
-        // Remove the current question and go back
-        if (history.length > 0) {
-            container.removeChild(container.lastElementChild);
-            const previousNode = history.pop();
-            currentNode = previousNode;
         }
     }
 
