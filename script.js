@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const questionBox = document.getElementById('questionBox');
         questionBox.innerHTML = ""; // Clear previous content
 
-        if (data[node].question) {
+        if (data[node] && data[node].question) {
             // Display the question
             const question = document.createElement('p');
             question.innerText = data[node].question;
@@ -730,11 +730,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 displayQuestion(currentNode);
             };
             questionBox.appendChild(noButton);
-        } else if (data[node].answer) {
+        } else if (data[node] && data[node].answer) {
             // Display the final answer
             const answer = document.createElement('p');
             answer.innerText = data[node].answer;
             questionBox.appendChild(answer);
+        } else {
+            // Fallback if something goes wrong
+            questionBox.innerText = "No more questions or answers.";
         }
     }
 
